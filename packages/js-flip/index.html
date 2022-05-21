@@ -1,12 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    main {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+    }
+
+    #list {
+      display: flex;
+      flex-flow: row wrap;
+      min-height: 400px;
+    }
+
+    .item {
+      width: 200px;
+      height: 150px;
+      margin: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: beige;
+      border-radius: 12px;
+      box-shadow: 0px 8px 8px rgba(0, 0, 0, .2);
+    }
+
+    .btn {
+      width: 100px;
+      height: 42px;
+      padding: 8px 32px;
+      background-color: rgb(43, 193, 220);
+      cursor: pointer;
+      border-radius: 12px;
+      line-height: 42px;
+      text-align: center;
+    }
+  </style>
 </head>
+
 <body>
-  
+  <main>
+    <section id="list">
+
+    </section>
+
+    <div onclick="handleClick()" class="btn">添加</div>
+  </main>
+
+  <script defer>
+    let positions = []
+    const list = document.getElementById('list')
+    let doms = []
+    let count = 0
+
+    function getRects(doms) {
+      return doms.map((dom, idx) => {
+        const rect = dom.getBoundingClientRect()
+        let { left, top } = rect
+        return { left, top }
+      })
+    }
+
+    function handleClick() {
+      doms = [...list.children]
+      //first
+      positions = getRects(doms)
+
+
+      const div = document.createElement('div')
+      div.classList.add('item')
+      div.innerText = 'item' + count++
+      //在头部插入dom
+      list.insertBefore(div, list.firstChild)
+
+      //last
+      let rects = getRects(doms)
+
+      
+      for(let i = 0; i< doms.length; i++) {
+        //invert
+        let dom = doms[i]
+        let left = positions[i].left - rects[i].left
+        let top =  positions[i].top - rects[i].top
+
+        //play
+        dom.animate([
+          { transform: `translate(${left}px, ${top}px)` },
+          { transform: `translate(0px, 0px)` }
+        ],{duration: 600})
+      }
+    }
+
+  </script>
 </body>
+
 </html>

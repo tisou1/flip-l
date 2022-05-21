@@ -21,7 +21,7 @@ root.render(
   <React.StrictMode>
     <Router>
       <App />
-      <ClickToComponent />
+      {/* <ClickToComponent /> */}
     </Router>
   </React.StrictMode>
 )
